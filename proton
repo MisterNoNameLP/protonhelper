@@ -1,5 +1,5 @@
 #!/usr/bin/pleal
-local version = "1"
+local version = "1.1"
 
 
 local argparse = require("argparse")
@@ -8,6 +8,12 @@ local args
 do 
 	local parser = argparse("proton helper v$version")
 	local command = ""
+	local commandArgs = ""
+
+	parser:flag("-v --version", "Print the version and exit"):action(function()
+		print("Proton helper v$version")
+		os.exit(0)
+	end)
 
 	parser:argument("Command to execute"):target("args"):args("*")
 
@@ -15,6 +21,7 @@ do
 	parser:option("-P --pfx --prefix", "The proton prefix"):target("pfx"):count(1)
 	parser:option("-s --steam", "Steam install path (optional)"):target("steam"):default("/tmp/unnecessaryLongPathNameToAvoidItPathBeing_usedAlready")
 	parser:option("-m --mode"):target("mode"):default("run")
+	parser:option("-a --arg", "Sets an arg to start the program with"):target("commandArgs"):count("*")
 
 	args = parser:parse()
 
@@ -22,11 +29,17 @@ do
 		command = "$command \"$v\" "
 	end
 	args.command = command
+	for _, v in pairs(args.commandArgs) do
+		commandArgs = "$commandArgs $v"
+	end
+	args.commandArgs = commandArgs
 end
 
 os.execute([[
 	export STEAM_COMPAT_DATA_PATH="$args.pfx"
 	export STEAM_COMPAT_CLIENT_INSTALL_PATH="$args.steam"
 
-	$args.proton/proton $args.mode $args.command
+	$args.proton/proton $args.mode $args.command $args.commandArgs
 ]])
+
+os.exit(0)
