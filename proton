@@ -1,0 +1,32 @@
+#!/usr/bin/pleal
+local version = "1"
+
+
+local argparse = require("argparse")
+local args
+
+do 
+	local parser = argparse("proton helper v$version")
+	local command = ""
+
+	parser:argument("Command to execute"):target("args"):args("*")
+
+	parser:option("-p --protom", "The proton install path"):target("proton"):count(1)
+	parser:option("-P --pfx --prefix", "The proton prefix"):target("pfx"):count(1)
+	parser:option("-s --steam", "Steam install path (optional)"):target("steam"):default("/tmp/unnecessaryLongPathNameToAvoidItPathBeing_usedAlready")
+	parser:option("-m --mode"):target("mode"):default("run")
+
+	args = parser:parse()
+
+	for _, v in pairs(args.args) do
+		command = "$command \"$v\" "
+	end
+	args.command = command
+end
+
+os.execute([[
+	export STEAM_COMPAT_DATA_PATH="$args.pfx"
+	export STEAM_COMPAT_CLIENT_INSTALL_PATH="$args.steam"
+
+	$args.proton/proton $args.mode $args.command
+]])
