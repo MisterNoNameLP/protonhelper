@@ -1,5 +1,5 @@
 #!/usr/bin/pleal
-local version = "1.1"
+local version = "1.2"
 
 
 local argparse = require("argparse")
@@ -33,6 +33,14 @@ do
 		commandArgs = "$commandArgs $v"
 	end
 	args.commandArgs = commandArgs
+end
+
+do
+	local file = io.open(args.pfx, "r")
+	if file == nil then
+		file = io.open(args.pfx, "w")
+	end
+	file:close()
 end
 
 os.execute([[
