@@ -1,5 +1,5 @@
 #!/usr/bin/pleal
-local version = "1.2"
+local version = "1.2.1"
 
 
 local argparse = require("argparse")
@@ -36,9 +36,9 @@ do
 end
 
 do
-	local file = io.open(args.pfx, "r")
+	local file = io.open("$args.pfx/tracked_files", "r")
 	if file == nil then
-		file = io.open(args.pfx, "w")
+		file = io.open("$args.pfx/tracked_files", "w")
 	end
 	file:close()
 end
