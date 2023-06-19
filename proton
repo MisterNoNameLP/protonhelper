@@ -1,5 +1,5 @@
 #!/usr/bin/pleal
-local version = "1.2.1"
+local version = "1.2.2"
 
 
 local argparse = require("argparse")
@@ -17,7 +17,7 @@ do
 
 	parser:argument("Command to execute"):target("args"):args("*")
 
-	parser:option("-p --protom", "The proton install path"):target("proton"):count(1)
+	parser:option("-p --proton", "The proton install path"):target("proton"):count(1)
 	parser:option("-P --pfx --prefix", "The proton prefix"):target("pfx"):count(1)
 	parser:option("-s --steam", "Steam install path (optional)"):target("steam"):default("/tmp/unnecessaryLongPathNameToAvoidItPathBeing_usedAlready")
 	parser:option("-m --mode"):target("mode"):default("run")
